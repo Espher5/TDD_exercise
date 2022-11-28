@@ -1,0 +1,2 @@
+class ParkingGarageError(Exception):
+    pass
