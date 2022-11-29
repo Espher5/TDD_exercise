@@ -16,7 +16,16 @@ class ParkingGarage:
         """
         Constructor
         """
-        pass
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setwarnings(False)
+
+        GPIO.setup(self.INFRARED_PIN1, GPIO.IN)
+        GPIO.setup(self.INFRARED_PIN2, GPIO.IN)
+        GPIO.setup(self.INFRARED_PIN3, GPIO.IN)
+        GPIO.setup(self.RTC_PIN, GPIO.IN)
+        GPIO.setup(self.SERVO_PIN, GPIO.OUT)
+        GPIO.setup(self.LED_PIN, GPIO.OUT)
+
 
     def check_occupancy(self, pin: int) -> bool:
         """
