@@ -21,7 +21,7 @@ class ParkingGarage:
     def check_occupancy(self, pin: int) -> bool:
         """
         Checks whether one of the infrared distance sensor detects something in front of it.
-        :param pin: The data pin of the sensor that is being checked (i.e., INFRARED_PIN1).
+        :param pin: The data pin of the sensor that is being checked (e.g., INFRARED_PIN1).
         :return: True if the infrared sensor detects something, False otherwise.
         """
         pass
