@@ -1,3 +1,4 @@
+import time
 import mock.GPIO as GPIO
 from mock.RTC import RTC
 from ParkingGarageError import ParkingGarageError
@@ -25,7 +26,9 @@ class ParkingGarage:
         GPIO.setup(self.RTC_PIN, GPIO.IN)
         GPIO.setup(self.SERVO_PIN, GPIO.OUT)
         GPIO.setup(self.LED_PIN, GPIO.OUT)
-
+        self.rtc = RTC(self.RTC_PIN)
+        self.pwm = GPIO.PWM(self.SERVO_PIN, 50)
+        self.pwm.start(0)
 
     def check_occupancy(self, pin: int) -> bool:
         """
@@ -58,12 +61,14 @@ class ParkingGarage:
     def open_garage_door(self) -> None:
         """
         Opens the garage door using the servo motor
+        A motor angle of 180 degrees corresponds to a fully open door
         """
         pass
 
     def close_garage_door(self) -> None:
         """
         Closes the garage door using the servo motor
+        A motor angle of 0 degrees corresponds to a fully closed door
         """
         pass
 
@@ -78,3 +83,14 @@ class ParkingGarage:
         Turns off the smart lightbulb
         """
         pass
+
+    def change_servo_angle(self, duty_cycle):
+        """
+        Changes the servo motor's angle by passing him the corresponding PWM duty cycle signal
+        :param duty_cycle: the length of the duty cycle
+        """
+        GPIO.output(self.SERVO_PIN, GPIO.HIGH)
+        self.pwm.ChangeDutyCycle(duty_cycle)
+        time.sleep(1)
+        GPIO.output(self.SERVO_PIN, GPIO.LOW)
+        self.pwm.ChangeDutyCycle(0)
