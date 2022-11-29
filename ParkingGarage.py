@@ -35,7 +35,7 @@ class ParkingGarage:
 
     def calculate_parking_fee(self, entry_time: str) -> float:
         """
-        Calculates the amount of money to be paid by the customer of the garage
+        Uses the RTC to calculate the amount of money to be paid by the customer of the garage
         For each hour spent in the garage, there is a flat cost of 2.50 €;
         additionally, during the weekend (Saturday and Sunday)
         an additional 25% fee is applied to the total of the parking ticket.
