@@ -36,14 +36,25 @@ class ParkingGarage:
         :param pin: The data pin of the sensor that is being checked (e.g., INFRARED_PIN1).
         :return: True if the infrared sensor detects something, False otherwise.
         """
-        pass
+        if pin not in [self.INFRARED_PIN1, self.INFRARED_PIN2, self.INFRARED_PIN3]:
+            raise ParkingGarageError
+
+        if GPIO.input(pin) > 0:
+            return True
+
+        return False
 
     def get_occupied_spots(self) -> int:
         """
         Calculates the number of occupied parking spots in the garage.
         :return: The number of occupied spots.
         """
-        pass
+        occupied_spots = 0
+        for pin in [self.INFRARED_PIN1, self.INFRARED_PIN2, self.INFRARED_PIN3]:
+            if self.check_occupancy(pin):
+                occupied_spots += 1
+
+        return occupied_spots
 
     def calculate_parking_fee(self, entry_time: str) -> float:
         """
@@ -56,7 +67,25 @@ class ParkingGarage:
         vehicle in the garage
         :return: The total amount to be paid by the customer
         """
-        pass
+
+        time_now = self.rtc.get_current_time_string()
+        day = self.rtc.get_current_day()
+
+        hour_now = int(time_now[0] + time_now[1])
+        hour_entry = int(entry_time[0] + entry_time[1])
+
+        minutes_now = int(time_now[3] + time_now[4])
+        minutes_entry = int(entry_time[3] + entry_time[4])
+
+        hours = hour_now - hour_entry
+        if minutes_now - minutes_entry > 0:
+            hours += 1
+        fee = hours * 2.50
+
+        if day in ['SATURDAY', 'SUNDAY']:
+            fee += fee * 0.25
+
+        return fee
 
     def open_garage_door(self) -> None:
         """
